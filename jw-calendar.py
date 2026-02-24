@@ -87,6 +87,9 @@ def main():
 
     for p in sched_raw:
         for idx, (wd, wd_r) in enumerate(WDS.items()):
+            # if the course doesn't have a schedule (such as 'TCC/Estagio'), skip it
+            if p["horent"]=="null" or p["horsai"]=="null" or p[wd]=="null":
+                continue
             start_t = list(map(int, p["horent"].split(":")));
             end_t = list(map(int, p["horsai"].split(":")));
             name = p[wd][1:p[wd].find("-")] if p[wd]!="null" else None;
