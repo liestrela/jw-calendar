@@ -92,6 +92,8 @@ def main():
             name = p[wd][1:p[wd].find("-")] if p[wd]!="null" else None;
 
             if name:
+                cod_tur = p[wd].strip()[p[wd].find("-")+1:-2];
+
                 jw_info_data["c0-param0"] = f"string:{name}";
                 info_res = s.post(JW_INFO, data=jw_info_data);
                 info_s = info_res.text;
@@ -100,8 +102,9 @@ def main():
                 info_js  = info_s[info_s.find("anoIngresso")-1:il[-2]+1];
                 info_raw = next(cj.parse_js_objects(info_js));
 
-                name_full =  info_raw["turmas"][0]["nomdis"];
-                name_full += f" ({info_raw["turmas"][0]["obstur"].replace("\r\n", " ")})";
+                tur = next(t for t in info_raw["turmas"] if t["codtur"]==cod_tur);
+                name_full =  tur["nomdis"];
+                name_full += f" ({tur["obstur"].replace("\r\n", " ")})";
 
                 ev = ic.Event();
                 ev.add("summary", name_full);
