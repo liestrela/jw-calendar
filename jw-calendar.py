@@ -107,7 +107,6 @@ def main():
 
                 tur = next(t for t in info_raw["turmas"] if t["codtur"]==cod_tur);
                 name_full =  tur["nomdis"];
-                name_full += f" ({tur["obstur"].replace("\r\n", " ")})";
 
                 ev = ic.Event();
                 ev.add("summary", name_full);
@@ -130,6 +129,8 @@ def main():
                     )[0].replace(hour=end_t[0],minute=end_t[1])
                 );
                 ev.add("rrule", vRecur({"FREQ": ["WEEKLY"], "BYDAY": wd_r}));
+                ev.add("location", tur["obstur"].replace("\r\n", " "));
+                ev.add("status", "CONFIRMED");
 
                 al = ic.Alarm();
                 al.add("action", "DISPLAY");
